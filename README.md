@@ -1,5 +1,8 @@
 # Wrm - Remove files or directories
 
+![workflow_build](https://github.com/p1486/sdmw/actions/workflows/build.yml/badge.svg)
+![Crates.io Version](https://img.shields.io/crates/v/wrm)
+
 ## Installation
 Run the following Cargo command:
 ```
