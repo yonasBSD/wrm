@@ -8,7 +8,6 @@ Run the following Cargo command:
 ```
 cargo install wrm
 ```
-Or download prebuilt binary from the [GitHub release page](https://github.com/9yokuro/wrm/releases)
 
 ## Usage
 To move files to trash(`$HOME/.config/wrm/trash`):
