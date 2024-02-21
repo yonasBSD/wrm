@@ -63,3 +63,7 @@ dual licensed as above, without any additional terms or conditions.
 ## TODO
 - Add auto empty
 - Multiplatform support
+- Change from subcommands to options
+- Rename delete to destroy
+- Follow the Freedesktop.org Specifications
+- etc
