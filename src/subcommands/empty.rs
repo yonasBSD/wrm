@@ -1,8 +1,9 @@
 use crate::{subcommands::list, utils::*, FilesInTrash, Options, Result, WRM_PATH};
 use colored::Colorize;
+use trash;
 
 pub fn empty(files_in_trash: &FilesInTrash, options: &Options) -> Result<()> {
-    if files_in_trash.files_in_trash().is_empty() {
+    if trash::os_limited::list().unwrap().is_empty() {
         eprintln!("There are no files or directories in trash");
 
         return Ok(());

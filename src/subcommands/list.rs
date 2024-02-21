@@ -3,19 +3,20 @@ use colored::Colorize;
 use filey::FileTypes;
 use std::fmt::Display;
 
-pub fn list(files_in_trash: &FilesInTrash) -> Result<()> {
-    if files_in_trash.files_in_trash().is_empty() {
+pub fn list(_files_in_trash: &FilesInTrash) -> Result<()> {
+    let trash_items = trash::os_limited::list().unwrap();
+
+    if trash_items.is_empty() {
         eprintln!("There are no files or directories in trash");
 
         return Ok(());
     }
 
-    for file in files_in_trash.files_in_trash() {
-        let colorized_path = colorize(file.path())?;
-
-        let formatted = format(colorized_path, file.from());
-
-        println!("{}", formatted);
+    for file in trash_items {
+        println!("{}", file.original_path().display());
+        //let colorized_path = colorize(file.name);
+        //let formatted = format(colorized_path, file.original_path().display());
+        //println!("{}", formatted);
     }
 
     Ok(())

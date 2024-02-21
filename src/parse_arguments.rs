@@ -15,7 +15,7 @@ struct Arguments {
     subcommand: Subcommands,
     /// Do not prompt whether to change destinations.
     #[clap(short, long)]
-    noninteractive: bool,
+    force: bool,
     /// Do not print log messages.
     #[clap(short, long)]
     quiet: bool,
@@ -23,7 +23,7 @@ struct Arguments {
 
 #[derive(Subcommand, Debug)]
 enum Subcommands {
-    /// Delete files.
+    /// Delete files from trash.
     Delete { paths: Vec<String> },
     /// Empty trash.
     Empty,
@@ -61,7 +61,7 @@ impl Options {
 pub fn parse_arguments() -> Result<()> {
     let arguments = Arguments::parse();
 
-    let options = Options::new(arguments.noninteractive, arguments.quiet);
+    let options = Options::new(arguments.force, arguments.quiet);
 
     let mut files_in_trash = FilesInTrash::read(absolutize(FILES_IN_TRASH)?)?;
 

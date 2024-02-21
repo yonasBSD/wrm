@@ -3,6 +3,8 @@ use colored::Colorize;
 use filey::Filey;
 use inquire::Confirm;
 use std::{error::Error, fmt::Display, path::Path};
+use trash;
+use home;
 
 pub fn absolutize<P: AsRef<Path>>(path: P) -> Result<String> {
     let absolutized = Filey::new(path)
@@ -24,19 +26,29 @@ pub fn file_name<P: AsRef<Path>>(path: P) -> Option<String> {
 }
 
 pub fn remove<P: AsRef<Path>>(path: P) -> Result<()> {
-    Filey::new(path)
-        .remove()
-        .map_err(|e| e.into())
-        .map_err(WrmError)?;
+    /*
+    println!("Items in trash");
+    for item in trash::os_limited::list().unwrap() {
+        println!("{}", item.original_path().display());
+    }
+    */
 
+    let p: String = asref_path_to_string(path);
+    //println!("Trying to remove {:#?}", p);
+
+    let selected: Vec<_>;
+    if p != format!("{}/.config/wrm", home::home_dir().unwrap().display()) {
+        selected = trash::os_limited::list().unwrap().into_iter().filter(|x| x.name == p).collect();
+    } else {
+        selected = trash::os_limited::list().unwrap();
+    }
+
+    trash::os_limited::purge_all(selected).unwrap();
     Ok(())
 }
 
-pub fn rename<P: AsRef<Path>, Q: AsRef<Path>>(from: P, to: Q) -> Result<()> {
-    Filey::new(from)
-        .move_to(to)
-        .map_err(|e| e.into())
-        .map_err(WrmError)?;
+pub fn rename<P: AsRef<Path>, Q: AsRef<Path>>(from: P, _to: Q) -> Result<()> {
+    let _ = trash::delete(from);
 
     Ok(())
 }

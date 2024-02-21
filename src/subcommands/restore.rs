@@ -4,6 +4,7 @@ use crate::{
 use colored::Colorize;
 use filey::Filey;
 use std::fmt::Display;
+use trash;
 
 pub fn restore(
     paths: &Vec<String>,
@@ -13,7 +14,7 @@ pub fn restore(
     for path in paths {
         let path = &absolutize(path)?;
 
-        exists_or_else!(path);
+        //exists_or_else!(path);
 
         restore_inner(path, files_in_trash, options)?;
     }
@@ -26,14 +27,18 @@ fn restore_inner(
     files_in_trash: &mut FilesInTrash,
     options: &Options,
 ) -> Result<()> {
-    for file in files_in_trash.clone().files_in_trash() {
-        if path == file.path() {
+    for file in trash::os_limited::list().unwrap() {
+        if asref_path_to_string(path) == asref_path_to_string(file.original_path()) {
+            let f1 = file.name.clone();
+            let f2 = file.name.clone();
+            let f3 = file.name.clone();
+
             if !options.noninteractive() {
                 let message = format!(
                     "{} '{}' to '{}'?",
                     "Restore".red().bold(),
-                    file.path(),
-                    file.from()
+                    asref_path_to_string(file.original_path()),
+                    f1
                 );
 
                 if !confirm(message)? {
@@ -43,17 +48,15 @@ fn restore_inner(
                 }
             }
 
-            if let Err(e) = rename(file.path(), file.from()) {
+            if let Err(e) = rename(file.original_path(), f2) {
                 eprintln(e);
 
                 break;
             }
 
-            files_in_trash
-                .remove(file)
-                .write(absolutize(FILES_IN_TRASH)?)?;
+            trash::os_limited::restore_all(trash::os_limited::list().unwrap().into_iter().filter(|x| x.name == f3)).unwrap();
 
-            print_log_message(file.path(), file.from(), options.quiet());
+            print_log_message(asref_path_to_string(file.original_path()), file.name, options.quiet());
 
             break;
         }
