@@ -66,4 +66,5 @@ dual licensed as above, without any additional terms or conditions.
 - Change from subcommands to options
 - Rename delete to destroy
 - Follow the Freedesktop.org Specifications
+- Add shell completions
 - etc
