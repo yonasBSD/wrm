@@ -67,4 +67,5 @@ dual licensed as above, without any additional terms or conditions.
 - Rename delete to destroy
 - Follow the Freedesktop.org Specifications
 - Add shell completions
+- Create rich UI 
 - etc
