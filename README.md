@@ -61,9 +61,9 @@ for inclusion in the work by you, as defined in the Apache-2.0 license, shall be
 dual licensed as above, without any additional terms or conditions.
 
 ## TODO
+- Follow the Freedesktop.org Trash Specifications
+- Add shell completions
 - Add auto empty
 - Multiplatform support
-- Follow the Freedesktop.org Specifications
-- Add shell completions
 - Create rich UI 
-- etc
+- Optimize performance
