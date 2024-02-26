@@ -1,7 +1,7 @@
+mod actions;
 mod files_in_trash;
 mod initialize;
 mod parse_arguments;
-mod subcommands;
 #[cfg(test)]
 mod test;
 pub mod utils;

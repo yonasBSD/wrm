@@ -1,4 +1,4 @@
-use crate::{subcommands::list, utils::*, FilesInTrash, Options, Result, WRM_PATH};
+use crate::{actions::list, utils::*, FilesInTrash, Options, Result, WRM_PATH};
 use colored::Colorize;
 
 pub fn empty(files_in_trash: &FilesInTrash, options: &Options) -> Result<()> {

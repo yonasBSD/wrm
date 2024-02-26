@@ -1,5 +1,5 @@
-use crate::{subcommands, utils::*, FilesInTrash, Result, FILES_IN_TRASH};
-use clap::{Parser, Subcommand};
+use crate::{actions, utils::*, FilesInTrash, Result, FILES_IN_TRASH};
+use clap::Parser;
 
 #[derive(Debug, Parser)]
 #[clap(
@@ -11,28 +11,25 @@ use clap::{Parser, Subcommand};
     verbatim_doc_comment
 )]
 struct Arguments {
-    #[clap(subcommand)]
-    subcommand: Subcommands,
+    paths: Option<Vec<String>>,
+    /// Destroy files.
+    #[clap(short, long)]
+    destroy: bool,
+    /// Empty trash.
+    #[clap(short, long)]
+    empty: bool,
+    /// List files in trash.
+    #[clap(short, long)]
+    list: bool,
     /// Do not prompt whether to change destinations.
     #[clap(short, long)]
     noninteractive: bool,
     /// Do not print log messages.
     #[clap(short, long)]
     quiet: bool,
-}
-
-#[derive(Subcommand, Debug)]
-enum Subcommands {
-    /// Delete files.
-    Delete { paths: Vec<String> },
-    /// Empty trash.
-    Empty,
-    /// List files in trash.
-    List,
-    /// Move files to trash.
-    Remove { paths: Vec<String> },
     /// Restore files to where they came from.
-    Restore { paths: Vec<String> },
+    #[clap(short, long)]
+    restore: bool,
 }
 
 #[derive(Debug)]
@@ -65,16 +62,28 @@ pub fn parse_arguments() -> Result<()> {
 
     let mut files_in_trash = FilesInTrash::read(absolutize(FILES_IN_TRASH)?)?;
 
-    match arguments.subcommand {
-        Subcommands::Delete { paths } => subcommands::delete(&paths, &options)?,
-        Subcommands::Empty => subcommands::empty(&files_in_trash, &options)?,
-        Subcommands::List => subcommands::list(&files_in_trash)?,
-        Subcommands::Remove { paths } => {
-            subcommands::remove(&paths, &mut files_in_trash, &options)?
+    if arguments.destroy {
+        if let Some(paths) = arguments.paths {
+            return actions::destroy(&paths, &options);
         }
-        Subcommands::Restore { paths } => {
-            subcommands::restore(&paths, &mut files_in_trash, &options)?
+    }
+
+    if arguments.empty {
+        return actions::empty(&files_in_trash, &options);
+    }
+
+    if arguments.list {
+        return actions::list(&files_in_trash);
+    }
+
+    if arguments.restore {
+        if let Some(paths) = arguments.paths {
+            return actions::restore(&paths, &mut files_in_trash, &options);
         }
+    }
+
+    if let Some(paths) = arguments.paths {
+        return actions::remove(&paths, &mut files_in_trash, &options);
     }
 
     Ok(())
