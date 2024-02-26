@@ -5,9 +5,9 @@ use std::{
     path::{Path, PathBuf},
 };
 
-pub const WRM_PATH: &str = "~/.config/wrm";
-pub const TRASH: &str = "~/.config/wrm/trash/";
-pub const FILES_IN_TRASH: &str = "~/.config/wrm/files.json";
+pub const WRM_PATH: &str = "~/.local/share/wrm";
+pub const TRASH: &str = "~/.local/share/wrm/trash/";
+pub const FILES_IN_TRASH: &str = "~/.local/share/wrm/files.json";
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct File {

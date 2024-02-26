@@ -1,5 +1,6 @@
 mod actions;
 mod files_in_trash;
+mod finish;
 mod initialize;
 mod parse_arguments;
 #[cfg(test)]
@@ -11,6 +12,7 @@ pub use crate::{
     parse_arguments::Options,
 };
 
+use finish::finish;
 use initialize::initialize;
 use parse_arguments::parse_arguments;
 use std::process::exit;
@@ -24,6 +26,12 @@ fn main() {
     }
 
     if let Err(e) = parse_arguments() {
+        eprintln(e);
+
+        exit(1);
+    }
+
+    if let Err(e) = finish() {
         eprintln(e);
 
         exit(1);
