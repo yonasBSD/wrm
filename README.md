@@ -10,19 +10,19 @@ cargo install wrm
 ```
 
 ## Usage
-To move files to trash(`$HOME/.config/wrm/trash`):
+To move files to trash(`$HOME/.local/share/wrm/trash`):
 ```console
 wrm foo bar ...
 ```
 
 To destroy files:
 ```console
-wrm --destroy foo bar ...
+wrm --destroy ~/.local/share/wrm/trash/foo ~/.local/share/wrm/trash/bar ...
 ```
 
 To restore files in trash to where they came from:
 ```console
-wrm --restore ~/.config/wrm/trash/foo ~/.config/wrm/trash/bar ...
+wrm --restore ~/.local/share/wrm/trash/foo ~/.local/share/wrm/trash/bar ...
 ```
 
 To list all files and directories in trash:
